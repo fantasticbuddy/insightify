@@ -5,6 +5,7 @@ export const AuthReducer = (state, action) => {
             console.log(action);
             return {...state, user : action.payload.user}
         case 'LOGOUT':
+            localStorage.removeItem('token');
             return {...state, user : null}
         default:
             return state;

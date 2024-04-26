@@ -1,9 +1,9 @@
 import { MdEmail } from "react-icons/md";
 import { FaUnlockAlt, FaUser } from "react-icons/fa";
 import { IoEye, IoEyeOff } from "react-icons/io5";
-import axios from 'axios';
 import React, { useRef, useState } from 'react'
 import { useAuthContext } from "../hooks/useAuthContext";
+import api, { setAuthToken } from "../api";
 
 export const Register = () => {
     const Auth = useAuthContext();
@@ -18,9 +18,11 @@ export const Register = () => {
         // we use fetch (inbuilt in js) which is slow
         // since this is a network request we will use async await
         try{
-            const response = await axios.post('http://localhost:8000/auth/register', {username, email, password}, {headers:{'Content-Type':'application/json'}}); // makes a post request to backend - 1 (api endpoint), 2 (body of req), 3 (headers - to verify req parameters)
+            const response = await api.post('/auth/register', {username, email, password}, {headers:{'Content-Type':'application/json'}}); // makes a post request to backend - 1 (api endpoint), 2 (body of req), 3 (headers - to verify req parameters)
             Auth.dispatch({type : 'LOGIN', payload : {user : response.data}}); 
             console.log(response);
+            localStorage.setItem('token', response.data.token);
+            setAuthToken();
         }catch(err){
             console.log(err);
         }

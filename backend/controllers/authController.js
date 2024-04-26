@@ -52,3 +52,14 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+exports.get_user_data = async(req, res) => {
+  try {
+    const user = req.user;
+    const user_without_password = {...user.toObject()};
+    delete user_without_password.passowrd;
+    res.status(200).json({user: user_without_password});
+  } catch (err) {
+    res.status(500).json({message: 'Internal server error'});
+  }
+}
